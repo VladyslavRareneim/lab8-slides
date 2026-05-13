@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лабораторна робота №8 - Слайдер</title>
+    <style>
+        body {
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        #main {
+            position: relative;
+            padding: 5px;
+            width: 660px;
+            height: 360px;
+            background-color: #e0e0e0;
+            border: 5px solid #a0a0a0;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #scr {
+            width: 600px;
+            height: 320px;
+            background-color: white;
+            background-size: cover;
+            background-position: center; /* Щоб картинки центрувалися */
+            border: 2px solid #333;
+            border-radius: 10px;
+            transition: background-image 0.4s ease-in-out; /* Плавний перехід між слайдами */
+        }
+
+        button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%); /* Точне центрування по вертикалі */
+            width: 40px;
+            height: 70px;
+            font: bold 16pt arial, tahoma, sans-serif;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.7);
+            border: 1px solid #999;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        button:hover {
+            background-color: rgba(255, 255, 255, 1);
+        }
+
+        button:active {
+            transform: translateY(-50%) scale(0.95);
+        }
+
+        .left {
+            left: 10px;
+        }
+
+        .right {
+            right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="main">
+        <button class="left">&lt;</button>
+        <div id="scr"></div>
+        <button class="right">&gt;</button>
+    </div>
+
+    <script>
+        // Створення об'єкта слайдера згідно з методичкою
+        let slider = { 
+            // Підібрані зображення природи (прямі посилання, щоб не залежати від локальних файлів)
+            slides: [
+                'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?auto=format&fit=crop&w=600&q=80',
+                'https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?auto=format&fit=crop&w=600&q=80',
+                'https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?auto=format&fit=crop&w=600&q=80'
+            ],
+            i: 0, // Початковий індекс
+
+            // Метод для встановлення фонового зображення
+            set: function(image) {
+                document.getElementById("scr").style.backgroundImage = "url('" + image + "')";
+            },
+
+            // Метод ініціалізації
+            init: function() {
+                this.set(this.slides[this.i]);
+            },
+
+            // Метод гортання вліво
+            left: function() {
+                this.i--;
+                if(this.i < 0) this.i = this.slides.length - 1;
+                this.set(this.slides[this.i]);
+            },
+
+            // Метод гортання вправо
+            right: function() {
+                this.i++;
+                if(this.i === this.slides.length) this.i = 0;
+                this.set(this.slides[this.i]);
+            }
+        };
+
+        // Запуск функцій після завантаження сторінки
+        window.onload = function() {
+            slider.init(); // Завантажуємо першу картинку
+
+            // Прив'язка подій до кнопок
+            document.querySelector('.left').onclick = function() {
+                slider.left();
+            };
+
+            document.querySelector('.right').onclick = function() {
+                slider.right();
+            };
+        };
+    </script>
+</body>
+</html>
